@@ -1,5 +1,5 @@
 import * as React from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, HTMLMotionProps } from "framer-motion";
 import { cva, type VariantProps } from "class-variance-authority";
 import Link from "next/link";
 import { ChevronDown, ChevronRight } from "lucide-react";
@@ -42,7 +42,7 @@ export interface MenuItemProps {
 }
 
 export interface EnhancedMenuProps
-  extends React.HTMLAttributes<HTMLDivElement>,
+  extends Omit<HTMLMotionProps<"div">, "ref">,
     VariantProps<typeof menuVariants> {
   items: MenuItemProps[];
   activeItemIndex?: number;
@@ -113,7 +113,6 @@ export const EnhancedMenu = React.forwardRef<HTMLDivElement, EnhancedMenuProps>(
       const hasSubMenu = item.children && item.children.length > 0;
       const isSubMenuOpen = openSubMenus.includes(index);
 
-      // Base item styles
       const itemBaseClasses = cn(
         "relative flex items-center px-3 py-2 rounded-md transition-all",
         isActive ? "font-medium" : "font-normal",
@@ -123,7 +122,6 @@ export const EnhancedMenu = React.forwardRef<HTMLDivElement, EnhancedMenuProps>(
         isActive && activeItemClassName,
       );
 
-      // Hover effect classes
       const hoverClasses = {
         underline: "group",
         highlight: "hover:bg-accent/50 hover:text-accent-foreground",
@@ -201,7 +199,6 @@ export const EnhancedMenu = React.forwardRef<HTMLDivElement, EnhancedMenuProps>(
             )}
           </div>
 
-          {/* Underline hover effect */}
           {hoverEffect === "underline" && (
             <motion.div
               className="absolute bottom-0 left-0 h-0.5 bg-current"
@@ -226,7 +223,6 @@ export const EnhancedMenu = React.forwardRef<HTMLDivElement, EnhancedMenuProps>(
         <div key={index} className="relative">
           {wrappedContent}
 
-          {/* Submenu */}
           {hasSubMenu && (
             <AnimatePresence>
               {isSubMenuOpen && (
@@ -259,13 +255,9 @@ export const EnhancedMenu = React.forwardRef<HTMLDivElement, EnhancedMenuProps>(
 
     return (
       <div ref={ref} className={cn("w-full", className)}>
-        {/* Mobile menu toggle */}
         {collapseMobileMenu && (
           <div
-            className={cn(
-              "md:hidden mb-2",
-              collapseMobileMenu === false && "hidden",
-            )}
+            className={cn("mb-2", collapseMobileMenu ? "md:hidden" : "hidden")}
           >
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -282,7 +274,6 @@ export const EnhancedMenu = React.forwardRef<HTMLDivElement, EnhancedMenuProps>(
           </div>
         )}
 
-        {/* Menu items */}
         <motion.div
           className={cn(
             menuVariants({ variant, orientation }),

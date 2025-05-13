@@ -78,7 +78,7 @@ export const PromoOffer = React.forwardRef<HTMLDivElement, PromoOfferProps>(
       codeLabel = "Use code:",
       ctaText,
       onCtaClick,
-      ...props
+      ...rest
     },
     ref,
   ) => {
@@ -180,6 +180,7 @@ export const PromoOffer = React.forwardRef<HTMLDivElement, PromoOfferProps>(
         <motion.div
           ref={ref}
           className={cn(promoOfferVariants({ variant, size }), className)}
+          {...(rest as any)}
           initial={{ opacity: 0, y: 20 }}
           animate={{
             opacity: 1,
@@ -187,7 +188,6 @@ export const PromoOffer = React.forwardRef<HTMLDivElement, PromoOfferProps>(
             ...controls,
           }}
           exit={{ opacity: 0, y: -20 }}
-          {...props}
         >
           {/* Badge */}
           {showBadge && (

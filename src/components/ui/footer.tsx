@@ -183,7 +183,7 @@ export default function Footer() {
       toast({
         title: "Inscrição confirmada!",
         description: "Obrigado por se inscrever na nossa newsletter.",
-        variant: "success",
+        variant: "default", // Corrigido: alterado de "success" para "default"
       });
     }, 1500);
   };
