@@ -1,51 +1,48 @@
 import * as React from "react";
-import { motion } from "framer-motion";
+import { motion, type Transition } from "framer-motion";
 import { type LucideIcon, type LucideProps } from "lucide-react";
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
-const iconVariants = cva(
-  "relative inline-flex",
-  {
-    variants: {
-      size: {
-        sm: "h-4 w-4",
-        default: "h-5 w-5",
-        lg: "h-6 w-6",
-        xl: "h-8 w-8",
-      },
-      variant: {
-        default: "text-foreground",
-        primary: "text-primary",
-        secondary: "text-secondary",
-        accent: "text-accent",
-        muted: "text-muted-foreground",
-        destructive: "text-destructive",
-        success: "text-green-500 dark:text-green-400",
-        warning: "text-yellow-500 dark:text-yellow-400",
-        info: "text-blue-500 dark:text-blue-400",
-      },
+const iconVariants = cva("relative inline-flex", {
+  variants: {
+    size: {
+      sm: "h-4 w-4",
+      default: "h-5 w-5",
+      lg: "h-6 w-6",
+      xl: "h-8 w-8",
     },
-    defaultVariants: {
-      size: "default",
-      variant: "default",
+    variant: {
+      default: "text-foreground",
+      primary: "text-primary",
+      secondary: "text-secondary",
+      accent: "text-accent",
+      muted: "text-muted-foreground",
+      destructive: "text-destructive",
+      success: "text-green-500 dark:text-green-400",
+      warning: "text-yellow-500 dark:text-yellow-400",
+      info: "text-blue-500 dark:text-blue-400",
     },
-  }
-);
+  },
+  defaultVariants: {
+    size: "default",
+    variant: "default",
+  },
+});
 
 export interface AnimatedIconProps
   extends React.HTMLAttributes<HTMLSpanElement>,
     VariantProps<typeof iconVariants> {
   icon: LucideIcon;
-  animation?: 
-    | "pulse" 
-    | "spin" 
-    | "bounce" 
-    | "shake" 
-    | "ping" 
-    | "wiggle" 
-    | "float" 
-    | "scale" 
+  animation?:
+    | "pulse"
+    | "spin"
+    | "bounce"
+    | "shake"
+    | "ping"
+    | "wiggle"
+    | "float"
+    | "scale"
     | "breathe"
     | "hover-rotate"
     | "hover-scale"
@@ -62,24 +59,30 @@ export interface AnimatedIconProps
   badgeClassName?: string;
 }
 
-export const AnimatedIcon = React.forwardRef<HTMLSpanElement, AnimatedIconProps>(
-  ({
-    className,
-    size,
-    variant,
-    icon: Icon,
-    animation = "none",
-    strokeWidth = 2,
-    iconProps,
-    animationDelay = 0,
-    animationDuration,
-    hoverAnimation = false,
-    circleBackground = false,
-    circleBackgroundClassName,
-    badgeCount,
-    badgeClassName,
-    ...props
-  }, ref) => {
+export const AnimatedIcon = React.forwardRef<
+  HTMLSpanElement,
+  AnimatedIconProps
+>(
+  (
+    {
+      className,
+      size,
+      variant,
+      icon: Icon,
+      animation = "none",
+      strokeWidth = 2,
+      iconProps,
+      animationDelay = 0,
+      animationDuration,
+      hoverAnimation = false,
+      circleBackground = false,
+      circleBackgroundClassName,
+      badgeCount,
+      badgeClassName,
+      ...props
+    },
+    ref,
+  ) => {
     // Basic animation variants
     const animationVariants = {
       pulse: {
@@ -89,7 +92,7 @@ export const AnimatedIcon = React.forwardRef<HTMLSpanElement, AnimatedIconProps>
           duration: animationDuration || 1.5,
           repeat: Infinity,
           delay: animationDelay,
-        },
+        } as Transition,
       },
       spin: {
         rotate: 360,
@@ -98,7 +101,7 @@ export const AnimatedIcon = React.forwardRef<HTMLSpanElement, AnimatedIconProps>
           repeat: Infinity,
           ease: "linear",
           delay: animationDelay,
-        },
+        } as Transition,
       },
       bounce: {
         y: [0, -5, 0],
@@ -106,16 +109,16 @@ export const AnimatedIcon = React.forwardRef<HTMLSpanElement, AnimatedIconProps>
           duration: animationDuration || 1,
           repeat: Infinity,
           delay: animationDelay,
-        },
+        } as Transition,
       },
       shake: {
         x: [0, -3, 3, -3, 0],
         transition: {
           duration: animationDuration || 0.5,
           repeat: Infinity,
-          repeatType: "mirror",
+          repeatType: "mirror" as const,
           delay: animationDelay,
-        },
+        } as Transition,
       },
       ping: {
         scale: [1, 1.1],
@@ -124,7 +127,7 @@ export const AnimatedIcon = React.forwardRef<HTMLSpanElement, AnimatedIconProps>
           duration: animationDuration || 1,
           repeat: Infinity,
           delay: animationDelay,
-        },
+        } as Transition,
       },
       wiggle: {
         rotate: [0, -10, 10, -10, 0],
@@ -132,7 +135,7 @@ export const AnimatedIcon = React.forwardRef<HTMLSpanElement, AnimatedIconProps>
           duration: animationDuration || 1,
           repeat: Infinity,
           delay: animationDelay,
-        },
+        } as Transition,
       },
       float: {
         y: [0, -10, 0],
@@ -140,7 +143,7 @@ export const AnimatedIcon = React.forwardRef<HTMLSpanElement, AnimatedIconProps>
           duration: animationDuration || 3,
           repeat: Infinity,
           delay: animationDelay,
-        },
+        } as Transition,
       },
       scale: {
         scale: [1, 1.2, 1],
@@ -148,7 +151,7 @@ export const AnimatedIcon = React.forwardRef<HTMLSpanElement, AnimatedIconProps>
           duration: animationDuration || 2,
           repeat: Infinity,
           delay: animationDelay,
-        },
+        } as Transition,
       },
       breathe: {
         opacity: [0.7, 1, 0.7],
@@ -156,7 +159,7 @@ export const AnimatedIcon = React.forwardRef<HTMLSpanElement, AnimatedIconProps>
           duration: animationDuration || 2.5,
           repeat: Infinity,
           delay: animationDelay,
-        },
+        } as Transition,
       },
     };
 
@@ -168,7 +171,7 @@ export const AnimatedIcon = React.forwardRef<HTMLSpanElement, AnimatedIconProps>
           type: "spring",
           stiffness: 400,
           damping: 10,
-        },
+        } as Transition,
       },
       "hover-scale": {
         scale: 1.2,
@@ -176,7 +179,7 @@ export const AnimatedIcon = React.forwardRef<HTMLSpanElement, AnimatedIconProps>
           type: "spring",
           stiffness: 400,
           damping: 10,
-        },
+        } as Transition,
       },
       "hover-bounce": {
         y: -5,
@@ -184,7 +187,7 @@ export const AnimatedIcon = React.forwardRef<HTMLSpanElement, AnimatedIconProps>
           type: "spring",
           stiffness: 400,
           damping: 10,
-        },
+        } as Transition,
       },
     };
 
@@ -194,25 +197,25 @@ export const AnimatedIcon = React.forwardRef<HTMLSpanElement, AnimatedIconProps>
       if (animation === "none") {
         // But we have hover animation
         if (hoverAnimation) {
-          const hoverType = 
-            animation.startsWith("hover-") 
-              ? animation 
-              : "hover-scale";
-              
+          const hoverType = animation.startsWith("hover-")
+            ? animation
+            : "hover-scale";
+
           return {
             whileHover: hoverVariants[hoverType as keyof typeof hoverVariants],
           };
         }
         return {};
       }
-      
+
       // If we have a non-hover animation
       if (!animation.startsWith("hover-")) {
         return {
-          animate: animationVariants[animation as keyof typeof animationVariants],
+          animate:
+            animationVariants[animation as keyof typeof animationVariants],
         };
       }
-      
+
       // If we have a hover animation explicitly set
       return {
         whileHover: hoverVariants[animation as keyof typeof hoverVariants],
@@ -220,41 +223,35 @@ export const AnimatedIcon = React.forwardRef<HTMLSpanElement, AnimatedIconProps>
     };
 
     const animationProps = getAnimationProps();
-    
+
     return (
       <span
         ref={ref}
-        className={cn(
-          iconVariants({ size, variant }),
-          className
-        )}
+        className={cn(iconVariants({ size, variant }), className)}
         {...props}
       >
         {circleBackground && (
-          <span 
+          <span
             className={cn(
               "absolute inset-0 rounded-full bg-current opacity-10",
               circleBackgroundClassName,
             )}
           />
         )}
-        
-        <motion.span
-          className="inline-flex"
-          {...animationProps}
-        >
-          <Icon 
-            strokeWidth={strokeWidth} 
-            className="transition-colors" 
+
+        <motion.span className="inline-flex" {...animationProps}>
+          <Icon
+            strokeWidth={strokeWidth}
+            className="transition-colors"
             {...iconProps}
           />
         </motion.span>
-        
+
         {typeof badgeCount !== "undefined" && (
           <span
             className={cn(
               "absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-destructive text-[10px] font-medium text-destructive-foreground",
-              badgeClassName
+              badgeClassName,
             )}
           >
             {badgeCount > 99 ? "99+" : badgeCount}
@@ -262,7 +259,7 @@ export const AnimatedIcon = React.forwardRef<HTMLSpanElement, AnimatedIconProps>
         )}
       </span>
     );
-  }
+  },
 );
 
 AnimatedIcon.displayName = "AnimatedIcon";

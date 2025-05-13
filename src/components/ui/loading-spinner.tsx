@@ -3,31 +3,28 @@ import { motion } from "framer-motion";
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
-const spinnerVariants = cva(
-  "relative flex items-center justify-center",
-  {
-    variants: {
-      size: {
-        default: "h-10 w-10",
-        sm: "h-6 w-6",
-        lg: "h-16 w-16",
-        xl: "h-24 w-24",
-      },
-      variant: {
-        default: "text-primary",
-        secondary: "text-secondary",
-        destructive: "text-destructive",
-        muted: "text-muted-foreground",
-        accent: "text-accent",
-        white: "text-white",
-      },
+const spinnerVariants = cva("relative flex items-center justify-center", {
+  variants: {
+    size: {
+      default: "h-10 w-10",
+      sm: "h-6 w-6",
+      lg: "h-16 w-16",
+      xl: "h-24 w-24",
     },
-    defaultVariants: {
-      size: "default",
-      variant: "default",
+    variant: {
+      default: "text-primary",
+      secondary: "text-secondary",
+      destructive: "text-destructive",
+      muted: "text-muted-foreground",
+      accent: "text-accent",
+      white: "text-white",
     },
-  }
-);
+  },
+  defaultVariants: {
+    size: "default",
+    variant: "default",
+  },
+});
 
 export interface LoadingSpinnerProps
   extends React.HTMLAttributes<HTMLDivElement>,
@@ -39,30 +36,36 @@ export interface LoadingSpinnerProps
   progressValue?: number;
 }
 
-export const LoadingSpinner = React.forwardRef<HTMLDivElement, LoadingSpinnerProps>(
-  ({ 
-    className, 
-    size, 
-    variant, 
-    text,
-    textPlacement = "bottom",
-    textClassName,
-    type = "spinner",
-    progressValue = 0,
-    ...props 
-  }, ref) => {
+export const LoadingSpinner = React.forwardRef<
+  HTMLDivElement,
+  LoadingSpinnerProps
+>(
+  (
+    {
+      className,
+      size,
+      variant,
+      text,
+      textPlacement = "bottom",
+      textClassName,
+      type = "spinner",
+      progressValue = 0,
+      ...props
+    },
+    ref,
+  ) => {
     const spinTransition = {
       repeat: Infinity,
       ease: "linear",
       duration: 1.5,
     };
-    
+
     const pulseTransition = {
       repeat: Infinity,
       repeatType: "reverse" as const,
       duration: 0.8,
     };
-    
+
     const bounceTransition = {
       y: {
         duration: 0.4,
@@ -71,13 +74,13 @@ export const LoadingSpinner = React.forwardRef<HTMLDivElement, LoadingSpinnerPro
         ease: "easeOut",
       },
     };
-    
+
     const dotsTransition = {
       repeat: Infinity,
       repeatType: "loop" as const,
       duration: 1.8,
     };
-    
+
     const renderSpinner = () => {
       switch (type) {
         case "spinner":
@@ -90,7 +93,7 @@ export const LoadingSpinner = React.forwardRef<HTMLDivElement, LoadingSpinnerPro
               transition={spinTransition}
             />
           );
-          
+
         case "dots":
           return (
             <div className="flex gap-2">
@@ -99,7 +102,7 @@ export const LoadingSpinner = React.forwardRef<HTMLDivElement, LoadingSpinnerPro
                   key={i}
                   className={cn("h-2 w-2 rounded-full bg-current")}
                   initial={{ scale: 0.8, opacity: 0.4 }}
-                  animate={{ 
+                  animate={{
                     scale: [0.8, 1.2, 0.8],
                     opacity: [0.4, 1, 0.4],
                   }}
@@ -111,7 +114,7 @@ export const LoadingSpinner = React.forwardRef<HTMLDivElement, LoadingSpinnerPro
               ))}
             </div>
           );
-          
+
         case "pulse":
           return (
             <motion.div
@@ -121,7 +124,7 @@ export const LoadingSpinner = React.forwardRef<HTMLDivElement, LoadingSpinnerPro
               transition={pulseTransition}
             />
           );
-          
+
         case "bounce":
           return (
             <div className="flex gap-2 items-end">
@@ -131,7 +134,7 @@ export const LoadingSpinner = React.forwardRef<HTMLDivElement, LoadingSpinnerPro
                   className={cn(
                     "h-2 w-2 rounded-full bg-current",
                     i === 0 && "h-3 w-3",
-                    i === 2 && "h-3 w-3"
+                    i === 2 && "h-3 w-3",
                   )}
                   animate={{ y: ["0%", "-50%", "0%"] }}
                   transition={{
@@ -142,25 +145,25 @@ export const LoadingSpinner = React.forwardRef<HTMLDivElement, LoadingSpinnerPro
               ))}
             </div>
           );
-          
+
         case "progress":
           return (
             <div className="w-full h-2 bg-current/20 rounded-full overflow-hidden">
-              <motion.div 
+              <motion.div
                 className="h-full bg-current"
                 initial={{ width: "0%" }}
-                animate={{ 
-                  width: progressValue ? `${progressValue}%` : "100%" 
+                animate={{
+                  width: progressValue ? `${progressValue}%` : "100%",
                 }}
                 transition={
-                  progressValue 
-                  ? { duration: 0.5, ease: "easeOut" }
-                  : { duration: 2, repeat: Infinity, repeatType: "reverse" }
+                  progressValue
+                    ? { duration: 0.5, ease: "easeOut" }
+                    : { duration: 2, repeat: Infinity, repeatType: "reverse" }
                 }
               />
             </div>
           );
-          
+
         case "gradient":
           return (
             <div className="relative h-full w-full rounded-full overflow-hidden">
@@ -178,21 +181,23 @@ export const LoadingSpinner = React.forwardRef<HTMLDivElement, LoadingSpinnerPro
           );
       }
     };
-    
+
     return (
       <div
         ref={ref}
         className={cn(
           "flex",
-          textPlacement === "bottom" ? "flex-col items-center gap-2" : "flex-row items-center gap-3",
-          className
+          textPlacement === "bottom"
+            ? "flex-col items-center gap-2"
+            : "flex-row items-center gap-3",
+          className,
         )}
         {...props}
       >
         <div className={spinnerVariants({ size, variant })}>
           {renderSpinner()}
         </div>
-        
+
         {text && (
           <motion.p
             className={cn(
@@ -203,7 +208,7 @@ export const LoadingSpinner = React.forwardRef<HTMLDivElement, LoadingSpinnerPro
               variant === "muted" && "text-muted-foreground",
               variant === "accent" && "text-accent",
               variant === "white" && "text-white",
-              textClassName
+              textClassName,
             )}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -214,7 +219,7 @@ export const LoadingSpinner = React.forwardRef<HTMLDivElement, LoadingSpinnerPro
         )}
       </div>
     );
-  }
+  },
 );
 
-LoadingSpinner.displayName = "LoadingSpinner"; 
+LoadingSpinner.displayName = "LoadingSpinner";

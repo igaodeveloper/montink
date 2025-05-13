@@ -16,8 +16,7 @@ const toastVariants = cva(
           "border-red-200 bg-red-50 dark:border-red-800 dark:bg-red-950 group-hover:bg-red-100 dark:group-hover:bg-red-900",
         warning:
           "border-yellow-200 bg-yellow-50 dark:border-yellow-800 dark:bg-yellow-950 group-hover:bg-yellow-100 dark:group-hover:bg-yellow-900",
-        info:
-          "border-blue-200 bg-blue-50 dark:border-blue-800 dark:bg-blue-950 group-hover:bg-blue-100 dark:group-hover:bg-blue-900",
+        info: "border-blue-200 bg-blue-50 dark:border-blue-800 dark:bg-blue-950 group-hover:bg-blue-100 dark:group-hover:bg-blue-900",
         modern:
           "border-none bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-lg group-hover:shadow-xl",
         glass:
@@ -27,7 +26,7 @@ const toastVariants = cva(
     defaultVariants: {
       variant: "default",
     },
-  }
+  },
 );
 
 export interface ToastProps
@@ -44,21 +43,24 @@ export interface ToastProps
 }
 
 const Toast = React.forwardRef<HTMLDivElement, ToastProps>(
-  ({
-    className,
-    variant,
-    title,
-    description,
-    action,
-    icon,
-    closeButton = true,
-    autoClose = true,
-    duration = 5000,
-    onClose,
-    ...props
-  }, ref) => {
+  (
+    {
+      className,
+      variant,
+      title,
+      description,
+      action,
+      icon,
+      closeButton = true,
+      autoClose = true,
+      duration = 5000,
+      onClose,
+      ...props
+    },
+    ref,
+  ) => {
     const [isVisible, setIsVisible] = React.useState(true);
-    
+
     React.useEffect(() => {
       if (autoClose) {
         const timer = setTimeout(() => {
@@ -67,32 +69,40 @@ const Toast = React.forwardRef<HTMLDivElement, ToastProps>(
             onClose?.();
           }, 300);
         }, duration);
-        
+
         return () => clearTimeout(timer);
       }
     }, [autoClose, duration, onClose]);
-    
+
     const handleClose = () => {
       setIsVisible(false);
       setTimeout(() => {
         onClose?.();
       }, 300);
     };
-    
+
     let iconComponent = icon;
     if (!icon && variant) {
       switch (variant) {
         case "success":
-          iconComponent = <CheckCircle className="h-5 w-5 text-green-600 dark:text-green-400" />;
+          iconComponent = (
+            <CheckCircle className="h-5 w-5 text-green-600 dark:text-green-400" />
+          );
           break;
         case "error":
-          iconComponent = <AlertCircle className="h-5 w-5 text-red-600 dark:text-red-400" />;
+          iconComponent = (
+            <AlertCircle className="h-5 w-5 text-red-600 dark:text-red-400" />
+          );
           break;
         case "warning":
-          iconComponent = <AlertTriangle className="h-5 w-5 text-yellow-600 dark:text-yellow-400" />;
+          iconComponent = (
+            <AlertTriangle className="h-5 w-5 text-yellow-600 dark:text-yellow-400" />
+          );
           break;
         case "info":
-          iconComponent = <Info className="h-5 w-5 text-blue-600 dark:text-blue-400" />;
+          iconComponent = (
+            <Info className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+          );
           break;
         case "modern":
         case "glass":
@@ -100,21 +110,22 @@ const Toast = React.forwardRef<HTMLDivElement, ToastProps>(
           break;
       }
     }
-    
-    const progressBarVariant = (variant === "default" || !variant) 
-      ? "bg-primary" 
-      : variant === "success"
-      ? "bg-green-600 dark:bg-green-400"
-      : variant === "error"
-      ? "bg-red-600 dark:bg-red-400"
-      : variant === "warning"
-      ? "bg-yellow-600 dark:bg-yellow-400"
-      : variant === "info"
-      ? "bg-blue-600 dark:bg-blue-400"
-      : variant === "modern"
-      ? "bg-white"
-      : "bg-white dark:bg-white";
-    
+
+    const progressBarVariant =
+      variant === "default" || !variant
+        ? "bg-primary"
+        : variant === "success"
+          ? "bg-green-600 dark:bg-green-400"
+          : variant === "error"
+            ? "bg-red-600 dark:bg-red-400"
+            : variant === "warning"
+              ? "bg-yellow-600 dark:bg-yellow-400"
+              : variant === "info"
+                ? "bg-blue-600 dark:bg-blue-400"
+                : variant === "modern"
+                  ? "bg-white"
+                  : "bg-white dark:bg-white";
+
     return (
       <AnimatePresence>
         {isVisible && (
@@ -138,7 +149,7 @@ const Toast = React.forwardRef<HTMLDivElement, ToastProps>(
                   </motion.div>
                 </div>
               )}
-              
+
               <div className="flex-1 space-y-1">
                 {title && (
                   <motion.div
@@ -151,7 +162,7 @@ const Toast = React.forwardRef<HTMLDivElement, ToastProps>(
                   </motion.div>
                 )}
                 {description && (
-                  <motion.div 
+                  <motion.div
                     initial={{ y: 5, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
                     transition={{ delay: 0.2 }}
@@ -161,9 +172,9 @@ const Toast = React.forwardRef<HTMLDivElement, ToastProps>(
                   </motion.div>
                 )}
               </div>
-              
+
               {action && <div className="shrink-0">{action}</div>}
-              
+
               {closeButton && (
                 <button
                   className="absolute right-2 top-2 rounded-md p-1 text-foreground/50 opacity-70 transition-opacity hover:text-foreground hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
@@ -174,10 +185,13 @@ const Toast = React.forwardRef<HTMLDivElement, ToastProps>(
                 </button>
               )}
             </div>
-            
+
             {autoClose && (
-              <motion.div 
-                className={cn("absolute bottom-0 left-0 h-1", progressBarVariant)}
+              <motion.div
+                className={cn(
+                  "absolute bottom-0 left-0 h-1",
+                  progressBarVariant,
+                )}
                 initial={{ width: "100%" }}
                 animate={{ width: "0%" }}
                 transition={{ duration: duration / 1000, ease: "linear" }}
@@ -187,9 +201,9 @@ const Toast = React.forwardRef<HTMLDivElement, ToastProps>(
         )}
       </AnimatePresence>
     );
-  }
+  },
 );
 
 Toast.displayName = "EnhancedToast";
 
-export { Toast }; 
+export { Toast };

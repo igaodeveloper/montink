@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
-import { motion } from "framer-motion";
+import { motion, PanInfo, AnimationDefinition } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
@@ -19,8 +19,10 @@ const buttonVariants = cva(
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
         glow: "bg-primary text-primary-foreground hover:shadow-[0_0_15px_rgba(59,130,246,0.5)] transition-shadow",
-        gradient: "bg-gradient-to-r from-blue-500 to-purple-600 text-white hover:from-blue-600 hover:to-purple-700",
-        outline3D: "border-2 border-primary bg-background hover:translate-y-[-2px] hover:shadow-md transition-transform",
+        gradient:
+          "bg-gradient-to-r from-blue-500 to-purple-600 text-white hover:from-blue-600 hover:to-purple-700",
+        outline3D:
+          "border-2 border-primary bg-background hover:translate-y-[-2px] hover:shadow-md transition-transform",
         pulse: "bg-primary text-primary-foreground hover:bg-primary/90",
       },
       size: {
@@ -35,7 +37,7 @@ const buttonVariants = cva(
       variant: "default",
       size: "default",
     },
-  }
+  },
 );
 
 export interface ButtonProps
@@ -47,19 +49,35 @@ export interface ButtonProps
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, asChild = false, showRipple = false, pulseEffect = false, ...props }, ref) => {
+  (
+    {
+      className,
+      variant,
+      size,
+      asChild = false,
+      showRipple = false,
+      pulseEffect = false,
+      ...props
+    },
+    ref,
+  ) => {
     const Comp = asChild ? Slot : "button";
 
-    const [rippleArray, setRippleArray] = React.useState<{ x: number; y: number; size: number; id: number }[]>([]);
+    const [rippleArray, setRippleArray] = React.useState<
+      { x: number; y: number; size: number; id: number }[]
+    >([]);
     const rippleTimeoutRef = React.useRef<NodeJS.Timeout | null>(null);
 
-    const addRipple = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    const addRipple = (
+      event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    ) => {
       if (!showRipple) return;
-      
+
       const rippleContainer = event.currentTarget.getBoundingClientRect();
-      const size = rippleContainer.width > rippleContainer.height 
-        ? rippleContainer.width 
-        : rippleContainer.height;
+      const size =
+        rippleContainer.width > rippleContainer.height
+          ? rippleContainer.width
+          : rippleContainer.height;
       const x = event.clientX - rippleContainer.left - size / 2;
       const y = event.clientY - rippleContainer.top - size / 2;
       const id = Date.now();
@@ -86,30 +104,90 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       },
     };
 
+    // Extract motion-specific props and regular button props
+    const { onDrag, onDragStart, onDragEnd, onAnimationStart, ...restProps } =
+      props;
+
     if (asChild) {
       return (
-        <Slot 
-          className={cn(buttonVariants({ variant, size, className }))} 
-          ref={ref} 
-          {...props} 
+        <Slot
+          className={cn(buttonVariants({ variant, size, className }))}
+          ref={ref}
+          {...restProps}
         />
       );
     }
 
     return (
       <motion.button
-        className={cn(buttonVariants({ variant, size, className }), "relative overflow-hidden")}
+        className={cn(
+          buttonVariants({ variant, size, className }),
+          "relative overflow-hidden",
+        )}
         ref={ref}
-        onClick={addRipple}
+        onClick={(e) => {
+          addRipple(e);
+          if (props.onClick) props.onClick(e);
+        }}
         whileHover={variant === "pulse" || pulseEffect ? "hover" : undefined}
         variants={pulseVariants}
         whileTap={{ scale: 0.97 }}
         transition={{ type: "spring", stiffness: 400, damping: 17 }}
-        {...props}
+        onDrag={
+          onDrag
+            ? (e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+                if (props.onDrag) {
+                  const reactEvent =
+                    e as unknown as React.DragEvent<HTMLButtonElement>;
+                  (props.onDrag as React.DragEventHandler<HTMLButtonElement>)(
+                    reactEvent,
+                  );
+                }
+              }
+            : undefined
+        }
+        onDragStart={
+          onDragStart
+            ? (e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+                if (props.onDragStart) {
+                  const reactEvent =
+                    e as unknown as React.DragEvent<HTMLButtonElement>;
+                  (
+                    props.onDragStart as React.DragEventHandler<HTMLButtonElement>
+                  )(reactEvent);
+                }
+              }
+            : undefined
+        }
+        onDragEnd={
+          onDragEnd
+            ? (e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+                if (props.onDragEnd) {
+                  const reactEvent =
+                    e as unknown as React.DragEvent<HTMLButtonElement>;
+                  (
+                    props.onDragEnd as React.DragEventHandler<HTMLButtonElement>
+                  )(reactEvent);
+                }
+              }
+            : undefined
+        }
+        onAnimationStart={
+          onAnimationStart
+            ? (definition: AnimationDefinition) => {
+                if (props.onAnimationStart) {
+                  // Cast to any to avoid type conflicts between React and Framer Motion event types
+                  (props.onAnimationStart as any)(definition);
+                }
+              }
+            : undefined
+        }
+        {...restProps}
       >
         {props.children}
-        
-        {showRipple && rippleArray.length > 0 &&
+
+        {showRipple &&
+          rippleArray.length > 0 &&
           rippleArray.map(({ x, y, size, id }) => (
             <motion.span
               key={id}
@@ -132,9 +210,9 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           ))}
       </motion.button>
     );
-  }
+  },
 );
 
 Button.displayName = "Button";
 
-export { Button, buttonVariants }; 
+export { Button, buttonVariants };

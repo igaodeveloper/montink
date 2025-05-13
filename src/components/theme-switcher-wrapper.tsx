@@ -8,4 +8,4 @@ export function ThemeSwitcherWrapper() {
       <ThemeSwitcher />
     </div>
   );
-} 
+}

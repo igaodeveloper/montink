@@ -1,7 +1,14 @@
 import * as React from "react";
 import { motion, useAnimation, AnimatePresence } from "framer-motion";
 import { cva, type VariantProps } from "class-variance-authority";
-import { X, Clock, Sparkles, PercentCircle, BadgePercent, Tag } from "lucide-react";
+import {
+  X,
+  Clock,
+  Sparkles,
+  PercentCircle,
+  BadgePercent,
+  Tag,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const promoOfferVariants = cva(
@@ -29,7 +36,7 @@ const promoOfferVariants = cva(
       variant: "default",
       size: "default",
     },
-  }
+  },
 );
 
 export interface PromoOfferProps
@@ -52,28 +59,39 @@ export interface PromoOfferProps
 }
 
 export const PromoOffer = React.forwardRef<HTMLDivElement, PromoOfferProps>(
-  ({
-    className,
-    variant,
-    size,
-    title,
-    description,
-    code,
-    discountValue,
-    endDate,
-    showTimer = false,
-    onClose,
-    showCloseButton = true,
-    showBadge = false,
-    badgeText = "Limited Offer",
-    copyCodeEnabled = true,
-    codeLabel = "Use code:",
-    ctaText,
-    onCtaClick,
-    ...props
-  }, ref) => {
-    const [timeLeft, setTimeLeft] = React.useState<{ days: number; hours: number; minutes: number; seconds: number }>({ 
-      days: 0, hours: 0, minutes: 0, seconds: 0 
+  (
+    {
+      className,
+      variant,
+      size,
+      title,
+      description,
+      code,
+      discountValue,
+      endDate,
+      showTimer = false,
+      onClose,
+      showCloseButton = true,
+      showBadge = false,
+      badgeText = "Limited Offer",
+      copyCodeEnabled = true,
+      codeLabel = "Use code:",
+      ctaText,
+      onCtaClick,
+      ...props
+    },
+    ref,
+  ) => {
+    const [timeLeft, setTimeLeft] = React.useState<{
+      days: number;
+      hours: number;
+      minutes: number;
+      seconds: number;
+    }>({
+      days: 0,
+      hours: 0,
+      minutes: 0,
+      seconds: 0,
     });
     const [copied, setCopied] = React.useState(false);
     const controls = useAnimation();
@@ -85,22 +103,26 @@ export const PromoOffer = React.forwardRef<HTMLDivElement, PromoOfferProps>(
         const timer = setInterval(() => {
           const now = new Date();
           const difference = endDate.getTime() - now.getTime();
-          
+
           if (difference <= 0) {
             clearInterval(timer);
             setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 });
             onClose?.();
             return;
           }
-          
+
           const days = Math.floor(difference / (1000 * 60 * 60 * 24));
-          const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-          const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+          const hours = Math.floor(
+            (difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60),
+          );
+          const minutes = Math.floor(
+            (difference % (1000 * 60 * 60)) / (1000 * 60),
+          );
           const seconds = Math.floor((difference % (1000 * 60)) / 1000);
-          
+
           setTimeLeft({ days, hours, minutes, seconds });
         }, 1000);
-        
+
         return () => clearInterval(timer);
       }
     }, [endDate, showTimer, onClose]);
@@ -111,20 +133,20 @@ export const PromoOffer = React.forwardRef<HTMLDivElement, PromoOfferProps>(
         await controls.start({ scale: 1.02 });
         await controls.start({ scale: 1 });
       };
-      
+
       const shimmerAnimation = async () => {
         await shimmerControls.start({
           x: "100%",
-          transition: { repeat: Infinity, duration: 2, ease: "linear" }
+          transition: { repeat: Infinity, duration: 2, ease: "linear" },
         });
       };
-      
+
       shimmerAnimation();
-      
+
       const interval = setInterval(() => {
         sequence();
       }, 10000);
-      
+
       return () => clearInterval(interval);
     }, [controls, shimmerControls]);
 
@@ -139,7 +161,7 @@ export const PromoOffer = React.forwardRef<HTMLDivElement, PromoOfferProps>(
 
     // Get icon based on variant
     const getIcon = () => {
-      switch(variant) {
+      switch (variant) {
         case "discount":
           return <PercentCircle className="h-6 w-6" />;
         case "special":
@@ -159,17 +181,17 @@ export const PromoOffer = React.forwardRef<HTMLDivElement, PromoOfferProps>(
           ref={ref}
           className={cn(promoOfferVariants({ variant, size }), className)}
           initial={{ opacity: 0, y: 20 }}
-          animate={{ 
-            opacity: 1, 
+          animate={{
+            opacity: 1,
             y: 0,
-            ...controls
+            ...controls,
           }}
           exit={{ opacity: 0, y: -20 }}
           {...props}
         >
           {/* Badge */}
           {showBadge && (
-            <motion.div 
+            <motion.div
               className="absolute -top-1 -right-1 bg-yellow-500 text-black text-xs font-bold py-1 px-2 rounded-bl-md rounded-tr-md shadow-md"
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
@@ -178,7 +200,7 @@ export const PromoOffer = React.forwardRef<HTMLDivElement, PromoOfferProps>(
               {badgeText}
             </motion.div>
           )}
-          
+
           {/* Close button */}
           {showCloseButton && onClose && (
             <button
@@ -189,10 +211,10 @@ export const PromoOffer = React.forwardRef<HTMLDivElement, PromoOfferProps>(
               <span className="sr-only">Close</span>
             </button>
           )}
-          
+
           <div className="flex items-start gap-4 w-full">
             {/* Icon */}
-            <motion.div 
+            <motion.div
               className="flex-shrink-0 mt-1"
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
@@ -200,10 +222,10 @@ export const PromoOffer = React.forwardRef<HTMLDivElement, PromoOfferProps>(
             >
               {getIcon()}
             </motion.div>
-            
+
             <div className="flex-1 space-y-2">
               {/* Title */}
-              <motion.div 
+              <motion.div
                 className="font-bold text-lg"
                 initial={{ y: 10, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
@@ -214,10 +236,10 @@ export const PromoOffer = React.forwardRef<HTMLDivElement, PromoOfferProps>(
                 )}
                 {title}
               </motion.div>
-              
+
               {/* Description */}
               {description && (
-                <motion.div 
+                <motion.div
                   className="text-sm opacity-90"
                   initial={{ y: 10, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
@@ -226,10 +248,10 @@ export const PromoOffer = React.forwardRef<HTMLDivElement, PromoOfferProps>(
                   {description}
                 </motion.div>
               )}
-              
+
               {/* Timer */}
               {showTimer && endDate && (
-                <motion.div 
+                <motion.div
                   className="flex flex-wrap gap-2 mt-2"
                   initial={{ y: 10, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
@@ -242,32 +264,40 @@ export const PromoOffer = React.forwardRef<HTMLDivElement, PromoOfferProps>(
                   <div className="flex gap-2 text-sm font-medium">
                     {timeLeft.days > 0 && (
                       <div className="flex items-center">
-                        <span className="bg-black/20 px-2 py-1 rounded">{timeLeft.days}d</span>
+                        <span className="bg-black/20 px-2 py-1 rounded">
+                          {timeLeft.days}d
+                        </span>
                       </div>
                     )}
                     <div className="flex items-center">
-                      <span className="bg-black/20 px-2 py-1 rounded">{timeLeft.hours.toString().padStart(2, '0')}h</span>
+                      <span className="bg-black/20 px-2 py-1 rounded">
+                        {timeLeft.hours.toString().padStart(2, "0")}h
+                      </span>
                     </div>
                     <div className="flex items-center">
-                      <span className="bg-black/20 px-2 py-1 rounded">{timeLeft.minutes.toString().padStart(2, '0')}m</span>
+                      <span className="bg-black/20 px-2 py-1 rounded">
+                        {timeLeft.minutes.toString().padStart(2, "0")}m
+                      </span>
                     </div>
                     <div className="flex items-center">
-                      <span className="bg-black/20 px-2 py-1 rounded">{timeLeft.seconds.toString().padStart(2, '0')}s</span>
+                      <span className="bg-black/20 px-2 py-1 rounded">
+                        {timeLeft.seconds.toString().padStart(2, "0")}s
+                      </span>
                     </div>
                   </div>
                 </motion.div>
               )}
-              
+
               {/* Promo Code */}
               {code && (
-                <motion.div 
+                <motion.div
                   className="flex flex-wrap items-center gap-2 mt-3"
                   initial={{ y: 10, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
                   transition={{ delay: 0.3 }}
                 >
                   <span className="text-sm">{codeLabel}</span>
-                  
+
                   <div className="relative overflow-hidden">
                     <motion.div
                       className="relative font-mono font-bold bg-black/10 px-3 py-1 rounded-md cursor-pointer"
@@ -286,7 +316,7 @@ export const PromoOffer = React.forwardRef<HTMLDivElement, PromoOfferProps>(
                           Copied!
                         </motion.div>
                       )}
-                      
+
                       {/* Shimmer effect */}
                       <motion.div
                         className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/30 to-transparent"
@@ -297,7 +327,7 @@ export const PromoOffer = React.forwardRef<HTMLDivElement, PromoOfferProps>(
                   </div>
                 </motion.div>
               )}
-              
+
               {/* CTA Button */}
               {ctaText && (
                 <motion.button
@@ -317,7 +347,7 @@ export const PromoOffer = React.forwardRef<HTMLDivElement, PromoOfferProps>(
         </motion.div>
       </AnimatePresence>
     );
-  }
+  },
 );
 
-PromoOffer.displayName = "PromoOffer"; 
+PromoOffer.displayName = "PromoOffer";

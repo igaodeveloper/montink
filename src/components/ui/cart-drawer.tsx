@@ -3,7 +3,17 @@
 import React, { useState, useEffect } from "react";
 import { useCart } from "@/components/cart-context";
 import { Button } from "@/components/ui/button";
-import { ShoppingCart, X, Trash2, Plus, Minus, CreditCard, Truck, ArrowRight, CheckCircle2 } from "lucide-react";
+import {
+  ShoppingCart,
+  X,
+  Trash2,
+  Plus,
+  Minus,
+  CreditCard,
+  Truck,
+  ArrowRight,
+  CheckCircle2,
+} from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 
@@ -19,7 +29,10 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
   const [processingCheckout, setProcessingCheckout] = useState(false);
 
   // Calculate total price
-  const total = items.reduce((acc, item) => acc + item.price * item.quantity, 0);
+  const total = items.reduce(
+    (acc, item) => acc + item.price * item.quantity,
+    0,
+  );
 
   // Format price to Brazilian Real
   const formatPrice = (value: number) => {
@@ -48,7 +61,7 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
 
   const handleIncrementQuantity = (id: string, currentQuantity: number) => {
     updateQuantity(id, currentQuantity + 1);
-    
+
     // Vibrate if available (mobile devices)
     if (navigator.vibrate) {
       navigator.vibrate(50);
@@ -61,7 +74,7 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
     } else {
       removeItem(id);
     }
-    
+
     // Vibrate if available (mobile devices)
     if (navigator.vibrate) {
       navigator.vibrate(50);
@@ -71,16 +84,18 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
   const handleCheckout = () => {
     setCheckoutClicked(true);
     setProcessingCheckout(true);
-    
+
     // Vibrate if available (mobile devices)
     if (navigator.vibrate) {
       navigator.vibrate([100, 50, 100]);
     }
-    
+
     // Simular processamento
     setTimeout(() => {
       setProcessingCheckout(false);
-      alert("Checkout simulado com sucesso! Em um ambiente real, você seria redirecionado para a página de pagamento.");
+      alert(
+        "Checkout simulado com sucesso! Em um ambiente real, você seria redirecionado para a página de pagamento.",
+      );
     }, 1500);
   };
 
@@ -116,7 +131,7 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
                   <ShoppingCart className="h-5 w-5 text-primary" />
                 </motion.div>
                 <h2 className="text-lg font-medium">Seu Carrinho</h2>
-                <motion.span 
+                <motion.span
                   className="rounded-full bg-primary px-2 py-1 text-xs text-primary-foreground"
                   initial={{ scale: 0.8 }}
                   animate={{ scale: 1 }}
@@ -146,7 +161,7 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
                   >
                     <ShoppingCart className="h-16 w-16 text-muted-foreground/30" />
                   </motion.div>
-                  <motion.p 
+                  <motion.p
                     className="mt-4 text-center text-muted-foreground"
                     initial={{ y: 10, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
@@ -180,7 +195,7 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
                       className="flex gap-3 rounded-lg border p-3 hover:border-primary/20 transition-colors"
                     >
                       {/* Item Image */}
-                      <motion.div 
+                      <motion.div
                         className="relative h-20 w-20 overflow-hidden rounded-md bg-muted"
                         whileHover={{ scale: 1.05 }}
                         transition={{ type: "spring", stiffness: 300 }}
@@ -257,7 +272,10 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
                         onClick={() => removeItem(item.id)}
                         className="h-7 w-7 rounded-full text-muted-foreground hover:text-destructive transition-colors flex items-center justify-center"
                         aria-label="Remover item"
-                        whileHover={{ scale: 1.1, backgroundColor: "rgba(239, 68, 68, 0.1)" }}
+                        whileHover={{
+                          scale: 1.1,
+                          backgroundColor: "rgba(239, 68, 68, 0.1)",
+                        }}
                         whileTap={{ scale: 0.9 }}
                       >
                         <Trash2 className="h-4 w-4" />
@@ -283,11 +301,15 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
                     </span>
                     <span className="text-green-600 font-medium">Grátis</span>
                   </div>
-                  <motion.div 
+                  <motion.div
                     className="flex items-center justify-between border-t pt-2"
                     initial={{ opacity: 0.8 }}
                     animate={{ opacity: 1 }}
-                    transition={{ repeat: Infinity, duration: 1.5, repeatType: "reverse" }}
+                    transition={{
+                      repeat: Infinity,
+                      duration: 1.5,
+                      repeatType: "reverse",
+                    }}
                   >
                     <span className="text-lg font-bold">Total</span>
                     <span className="text-lg font-bold text-primary">
@@ -295,7 +317,7 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
                     </span>
                   </motion.div>
                 </div>
-                <motion.div 
+                <motion.div
                   className="mt-4 relative"
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
@@ -308,7 +330,7 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
                   >
                     <AnimatePresence mode="wait">
                       {processingCheckout ? (
-                        <motion.div 
+                        <motion.div
                           className="flex items-center gap-2"
                           initial={{ opacity: 0 }}
                           animate={{ opacity: 1 }}
@@ -317,22 +339,26 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
                           <motion.div
                             className="h-4 w-4 rounded-full border-2 border-t-transparent border-white"
                             animate={{ rotate: 360 }}
-                            transition={{ repeat: Infinity, duration: 0.8, ease: "linear" }}
+                            transition={{
+                              repeat: Infinity,
+                              duration: 0.8,
+                              ease: "linear",
+                            }}
                           />
                           <span>Processando...</span>
                         </motion.div>
                       ) : checkoutClicked ? (
-                        <motion.div 
+                        <motion.div
                           className="flex items-center gap-2"
                           initial={{ opacity: 0 }}
                           animate={{ opacity: 1 }}
                           exit={{ opacity: 0 }}
                         >
-                          <CheckCircle2 className="h-5 w-5" /> 
+                          <CheckCircle2 className="h-5 w-5" />
                           <span>Pedido Finalizado!</span>
                         </motion.div>
                       ) : (
-                        <motion.div 
+                        <motion.div
                           className="flex items-center gap-2"
                           initial={{ opacity: 0 }}
                           animate={{ opacity: 1 }}
@@ -344,11 +370,13 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
                         </motion.div>
                       )}
                     </AnimatePresence>
-                    <motion.span 
+                    <motion.span
                       className="absolute bottom-0 left-0 h-1 bg-white/30"
                       initial={{ width: 0 }}
                       animate={{ width: processingCheckout ? "100%" : "0%" }}
-                      transition={processingCheckout ? { duration: 1.5 } : { duration: 0 }}
+                      transition={
+                        processingCheckout ? { duration: 1.5 } : { duration: 0 }
+                      }
                     />
                   </Button>
                 </motion.div>
@@ -362,4 +390,4 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
       )}
     </AnimatePresence>
   );
-} 
+}

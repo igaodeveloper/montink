@@ -1,12 +1,5 @@
 # 🖨️ Montink - Plataforma de Print On Demand
 
-
-
-
-
-
-
-
 ✨ Características
 
 🎨 Sua Marca, Nosso Cuidado - Crie sua loja com sua identidade visual
@@ -46,27 +39,33 @@ asdf global nodejs 20
 
 Verifique a versão ativa:
 
-node -v  # deve exibir v20.x.x
+node -v # deve exibir v20.x.x
 
 🛠️ Instalação e Execução
 
 Siga estes passos para configurar e executar o ambiente de desenvolvimento:
 
 # Clone o repositório
+
 git clone https://github.com/seu-usuario/montink.git
 cd montink
 
 # Garanta que está usando Node.js 20
+
 node -v
 
 # Instale as dependências
+
 npm install
 
 # Configure as variáveis de ambiente
+
 # Crie um arquivo .env.local baseado no exemplo .env.example
+
 cp .env.example .env.local
 
 # Inicie o servidor de desenvolvimento
+
 npm run dev
 
 Acesse http://localhost:3000 para ver a aplicação em funcionamento.
@@ -74,11 +73,11 @@ Acesse http://localhost:3000 para ver a aplicação em funcionamento.
 📋 Arquitetura do Projeto
 
 src/
-├── app/             # Rotas e páginas da aplicação (Next.js App Router)
-├── components/      # Componentes reutilizáveis
-│   ├── product/     # Componentes relacionados a produtos
-│   └── ui/          # Componentes de interface
-├── lib/             # Utilidades e funções auxiliares
+├── app/ # Rotas e páginas da aplicação (Next.js App Router)
+├── components/ # Componentes reutilizáveis
+│ ├── product/ # Componentes relacionados a produtos
+│ └── ui/ # Componentes de interface
+├── lib/ # Utilidades e funções auxiliares
 
 🧩 Componentes Principais
 
@@ -132,8 +131,6 @@ Mobile: Navegação adaptada para uso com uma mão
 
 🔮 Próximas Funcionalidades
 
-
-
 🤝 Contribuindo
 
 Contribuições são bem-vindas! Para contribuir:
@@ -151,4 +148,3 @@ Abra um Pull Request
 📄 Licença
 
 Este projeto está licenciado sob a MIT License - veja o arquivo LICENSE para detalhes.
-

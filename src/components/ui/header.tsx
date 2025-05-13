@@ -2,7 +2,21 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { ShoppingCart, Search, User, Menu, X, Heart, Bell, ShoppingBag, LogOut, Settings, Home, Tag, Tally1 } from "lucide-react";
+import {
+  ShoppingCart,
+  Search,
+  User,
+  Menu,
+  X,
+  Heart,
+  Bell,
+  ShoppingBag,
+  LogOut,
+  Settings,
+  Home,
+  Tag,
+  Tally1,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { motion, AnimatePresence } from "framer-motion";
@@ -10,7 +24,7 @@ import { ThemeSwitcher } from "@/components/theme-switcher";
 import { useCart } from "@/components/cart-context";
 import CartDrawer from "./cart-drawer";
 import { Icons } from "./icons";
-import { 
+import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
@@ -43,13 +57,42 @@ export default function Header() {
 
   // Sample navigation items com links melhorados
   const navItems = [
-    { title: "Novidades", href: "#novidades", icon: <Tag className="h-4 w-4" /> },
-    { title: "Camisetas", href: "#camisetas", icon: <Tally1 className="h-4 w-4" /> },
-    { title: "Moletons", href: "#moletons", icon: <ShoppingBag className="h-4 w-4" /> },
-    { title: "Canecas", href: "#canecas", icon: <Icons.cup className="h-4 w-4" /> },
-    { title: "Acessórios", href: "#acessorios", icon: <Icons.tshirt className="h-4 w-4" /> },
-    { title: "Como Funciona", href: "#como-funciona", icon: <Icons.info className="h-4 w-4" /> },
-    { title: "Planos", href: "#planos", icon: <Icons.star className="h-4 w-4" />, highlight: true },
+    {
+      title: "Novidades",
+      href: "#novidades",
+      icon: <Tag className="h-4 w-4" />,
+    },
+    {
+      title: "Camisetas",
+      href: "#camisetas",
+      icon: <Tally1 className="h-4 w-4" />,
+    },
+    {
+      title: "Moletons",
+      href: "#moletons",
+      icon: <ShoppingBag className="h-4 w-4" />,
+    },
+    {
+      title: "Canecas",
+      href: "#canecas",
+      icon: <Icons.cup className="h-4 w-4" />,
+    },
+    {
+      title: "Acessórios",
+      href: "#acessorios",
+      icon: <Icons.tshirt className="h-4 w-4" />,
+    },
+    {
+      title: "Como Funciona",
+      href: "#como-funciona",
+      icon: <Icons.info className="h-4 w-4" />,
+    },
+    {
+      title: "Planos",
+      href: "#planos",
+      icon: <Icons.star className="h-4 w-4" />,
+      highlight: true,
+    },
   ];
 
   const toggleCart = () => {
@@ -57,7 +100,7 @@ export default function Header() {
     if (isSearchOpen) setIsSearchOpen(false);
     if (isMenuOpen) setIsMenuOpen(false);
     if (isFavoritesOpen) setIsFavoritesOpen(false);
-    
+
     setIsCartOpen(!isCartOpen);
   };
 
@@ -80,24 +123,21 @@ export default function Header() {
       >
         <div className="container flex h-16 items-center justify-between">
           {/* Logo com animação */}
-          <Link
-            href="/"
-            className="flex items-center group"
-          >
+          <Link href="/" className="flex items-center group">
             <motion.div
               whileHover={{ rotate: 360 }}
               transition={{ duration: 0.5 }}
             >
               <Icons.logo className="h-8 w-8 mr-2 transition-transform group-hover:scale-110" />
             </motion.div>
-            <motion.span 
+            <motion.span
               className="text-xl font-bold text-primary"
               whileHover={{ scale: 1.05 }}
               transition={{ type: "spring", stiffness: 500 }}
             >
               Montink
             </motion.span>
-            <motion.span 
+            <motion.span
               className="ml-1 text-xs font-normal text-muted-foreground"
               initial={{ opacity: 0.8 }}
               whileHover={{ opacity: 1 }}
@@ -128,15 +168,15 @@ export default function Header() {
                       {item.title}
                     </motion.span>
                     {item.highlight && (
-                      <motion.span 
+                      <motion.span
                         className="ml-1 inline-flex h-1.5 w-1.5 rounded-full bg-primary"
-                        animate={{ 
+                        animate={{
                           scale: [1, 1.2, 1],
-                          opacity: [1, 0.8, 1]
+                          opacity: [1, 0.8, 1],
                         }}
-                        transition={{ 
+                        transition={{
                           repeat: Infinity,
-                          duration: 2
+                          duration: 2,
                         }}
                       />
                     )}
@@ -158,7 +198,7 @@ export default function Header() {
                 aria-label="Pesquisar"
               >
                 <Search className="h-5 w-5" />
-                <motion.span 
+                <motion.span
                   className="absolute inset-0 rounded-full bg-primary/10"
                   initial={{ scale: 0, opacity: 0 }}
                   whileHover={{ scale: 1, opacity: 1 }}
@@ -169,7 +209,10 @@ export default function Header() {
 
             {/* Account Button with Dropdown */}
             <DropdownMenu>
-              <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}>
+              <motion.div
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
+              >
                 <DropdownMenuTrigger asChild>
                   <Button
                     variant="ghost"
@@ -178,7 +221,7 @@ export default function Header() {
                     aria-label="Minha conta"
                   >
                     <User className="h-5 w-5" />
-                    <motion.span 
+                    <motion.span
                       className="absolute inset-0 rounded-full bg-primary/10"
                       initial={{ scale: 0, opacity: 0 }}
                       whileHover={{ scale: 1, opacity: 1 }}
@@ -231,7 +274,7 @@ export default function Header() {
                 }}
               >
                 <Heart className="h-5 w-5" />
-                <motion.span 
+                <motion.span
                   className="absolute inset-0 rounded-full bg-primary/10"
                   initial={{ scale: 0, opacity: 0 }}
                   whileHover={{ scale: 1, opacity: 1 }}
@@ -250,14 +293,14 @@ export default function Header() {
                 onClick={toggleCart}
               >
                 <ShoppingCart className="h-5 w-5" />
-                <motion.span 
+                <motion.span
                   className="absolute inset-0 rounded-full bg-primary/10"
                   initial={{ scale: 0, opacity: 0 }}
                   whileHover={{ scale: 1, opacity: 1 }}
                   transition={{ duration: 0.3 }}
                 />
                 {itemsCount > 0 && (
-                  <motion.span 
+                  <motion.span
                     className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-[10px] font-medium text-primary-foreground"
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
@@ -340,7 +383,7 @@ export default function Header() {
               <nav className="container py-4">
                 <ul className="flex flex-col space-y-4">
                   {navItems.map((item, index) => (
-                    <motion.li 
+                    <motion.li
                       key={item.title}
                       initial={{ opacity: 0, x: -20 }}
                       animate={{ opacity: 1, x: 0 }}
@@ -358,15 +401,15 @@ export default function Header() {
                         {item.icon}
                         {item.title}
                         {item.highlight && (
-                          <motion.span 
+                          <motion.span
                             className="ml-1 inline-flex h-2 w-2 rounded-full bg-primary"
-                            animate={{ 
+                            animate={{
                               scale: [1, 1.2, 1],
-                              opacity: [1, 0.8, 1]
+                              opacity: [1, 0.8, 1],
                             }}
-                            transition={{ 
+                            transition={{
                               repeat: Infinity,
-                              duration: 2
+                              duration: 2,
                             }}
                           />
                         )}
@@ -384,4 +427,4 @@ export default function Header() {
       <CartDrawer isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
     </>
   );
-} 
+}

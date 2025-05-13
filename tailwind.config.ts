@@ -83,15 +83,15 @@ const config = {
           "0%, 100%": { transform: "translateY(0)" },
           "50%": { transform: "translateY(-5px)" },
         },
-        "float": {
+        float: {
           "0%, 100%": { transform: "translateY(0)" },
           "50%": { transform: "translateY(-10px)" },
         },
-        "ripple": {
+        ripple: {
           "0%": { transform: "scale(0)", opacity: "1" },
           "100%": { transform: "scale(4)", opacity: "0" },
         },
-        "shimmer": {
+        shimmer: {
           "0%": { backgroundPosition: "200% 0" },
           "100%": { backgroundPosition: "-200% 0" },
         },
@@ -131,7 +131,7 @@ const config = {
           "0%, 100%": { transform: "translateX(0)" },
           "50%": { transform: "translateX(10px)" },
         },
-        "jump": {
+        jump: {
           "0%, 100%": { transform: "translateY(0) scale(1)" },
           "10%": { transform: "translateY(-10px) scale(1.1)" },
           "30%": { transform: "translateY(5px) scale(1)" },
@@ -139,7 +139,7 @@ const config = {
           "70%": { transform: "translateY(2px) scale(1)" },
           "90%": { transform: "translateY(-1px) scale(1)" },
         },
-        "wiggle": {
+        wiggle: {
           "0%, 100%": { transform: "rotate(0deg)" },
           "25%": { transform: "rotate(-5deg)" },
           "75%": { transform: "rotate(5deg)" },
@@ -150,9 +150,9 @@ const config = {
         "accordion-up": "accordion-up 0.2s ease-out",
         "pulse-ring": "pulse-ring 1.5s cubic-bezier(0.24, 0, 0.38, 1) infinite",
         "bounce-subtle": "bounce-subtle 2s ease-in-out infinite",
-        "float": "float 3s ease-in-out infinite",
-        "ripple": "ripple 1s cubic-bezier(0, 0.2, 0.8, 1) forwards",
-        "shimmer": "shimmer 2s linear infinite",
+        float: "float 3s ease-in-out infinite",
+        ripple: "ripple 1s cubic-bezier(0, 0.2, 0.8, 1) forwards",
+        shimmer: "shimmer 2s linear infinite",
         "spin-slow": "spin-slow 3s linear infinite",
         "scale-up-down": "scale-up-down 2s ease-in-out infinite",
         "fade-in-out": "fade-in-out 2s ease-in-out infinite",
@@ -162,8 +162,8 @@ const config = {
         "slide-in-bottom": "slide-in-bottom 0.5s ease-out",
         "progress-linear": "progress-linear 2s ease-in-out",
         "bounce-horizontal": "bounce-horizontal 1s ease-in-out infinite",
-        "jump": "jump 1s ease-in-out",
-        "wiggle": "wiggle 1s ease-in-out",
+        jump: "jump 1s ease-in-out",
+        wiggle: "wiggle 1s ease-in-out",
       },
       backdropBlur: {
         xs: "2px",

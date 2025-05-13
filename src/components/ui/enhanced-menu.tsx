@@ -5,27 +5,24 @@ import Link from "next/link";
 import { ChevronDown, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-const menuVariants = cva(
-  "relative flex",
-  {
-    variants: {
-      variant: {
-        default: "text-foreground",
-        primary: "text-primary",
-        secondary: "text-secondary",
-        minimal: "text-muted-foreground",
-      },
-      orientation: {
-        horizontal: "flex-row items-center",
-        vertical: "flex-col items-start",
-      }
+const menuVariants = cva("relative flex", {
+  variants: {
+    variant: {
+      default: "text-foreground",
+      primary: "text-primary",
+      secondary: "text-secondary",
+      minimal: "text-muted-foreground",
     },
-    defaultVariants: {
-      variant: "default",
-      orientation: "horizontal",
+    orientation: {
+      horizontal: "flex-row items-center",
+      vertical: "flex-col items-start",
     },
-  }
-);
+  },
+  defaultVariants: {
+    variant: "default",
+    orientation: "horizontal",
+  },
+});
 
 export interface MenuItemProps {
   label: string;
@@ -33,7 +30,12 @@ export interface MenuItemProps {
   icon?: React.ReactNode;
   children?: MenuItemProps[];
   badge?: string;
-  badgeVariant?: "default" | "primary" | "secondary" | "outline" | "destructive";
+  badgeVariant?:
+    | "default"
+    | "primary"
+    | "secondary"
+    | "outline"
+    | "destructive";
   onClick?: () => void;
   disabled?: boolean;
   active?: boolean;
@@ -55,41 +57,44 @@ export interface EnhancedMenuProps
 }
 
 export const EnhancedMenu = React.forwardRef<HTMLDivElement, EnhancedMenuProps>(
-  ({
-    className,
-    variant,
-    orientation,
-    items,
-    activeItemIndex,
-    hoverEffect = "highlight",
-    showIcons = true,
-    iconPosition = "left",
-    itemClassName,
-    activeItemClassName,
-    itemGap = "md",
-    mobileBreakpoint = "md",
-    collapseMobileMenu = true,
-    ...props
-  }, ref) => {
+  (
+    {
+      className,
+      variant,
+      orientation,
+      items,
+      activeItemIndex,
+      hoverEffect = "highlight",
+      showIcons = true,
+      iconPosition = "left",
+      itemClassName,
+      activeItemClassName,
+      itemGap = "md",
+      mobileBreakpoint = "md",
+      collapseMobileMenu = true,
+      ...props
+    },
+    ref,
+  ) => {
     const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
     const [hoveredIndex, setHoveredIndex] = React.useState<number | null>(null);
     const [openSubMenus, setOpenSubMenus] = React.useState<number[]>([]);
-    
+
     const toggleSubMenu = (index: number) => {
-      setOpenSubMenus(prev => 
-        prev.includes(index) 
-          ? prev.filter(i => i !== index) 
-          : [...prev, index]
+      setOpenSubMenus((prev) =>
+        prev.includes(index)
+          ? prev.filter((i) => i !== index)
+          : [...prev, index],
       );
     };
-    
+
     const menuItemGapClass = {
       none: "gap-0",
       sm: "gap-2",
       md: "gap-4",
       lg: "gap-6",
     }[itemGap];
-    
+
     const mobileBreakpointClass = {
       sm: "sm:flex-row sm:items-center",
       md: "md:flex-row md:items-center",
@@ -97,13 +102,17 @@ export const EnhancedMenu = React.forwardRef<HTMLDivElement, EnhancedMenuProps>(
       xl: "xl:flex-row xl:items-center",
       "2xl": "2xl:flex-row 2xl:items-center",
     }[mobileBreakpoint];
-    
-    const renderMenuItem = (item: MenuItemProps, index: number, isChild = false) => {
+
+    const renderMenuItem = (
+      item: MenuItemProps,
+      index: number,
+      isChild = false,
+    ) => {
       const isActive = index === activeItemIndex || item.active;
       const isHovered = hoveredIndex === index;
       const hasSubMenu = item.children && item.children.length > 0;
       const isSubMenuOpen = openSubMenus.includes(index);
-      
+
       // Base item styles
       const itemBaseClasses = cn(
         "relative flex items-center px-3 py-2 rounded-md transition-all",
@@ -111,9 +120,9 @@ export const EnhancedMenu = React.forwardRef<HTMLDivElement, EnhancedMenuProps>(
         item.disabled && "opacity-50 cursor-not-allowed pointer-events-none",
         hasSubMenu && "cursor-pointer",
         itemClassName,
-        isActive && activeItemClassName
+        isActive && activeItemClassName,
       );
-      
+
       // Hover effect classes
       const hoverClasses = {
         underline: "group",
@@ -122,31 +131,30 @@ export const EnhancedMenu = React.forwardRef<HTMLDivElement, EnhancedMenuProps>(
         glow: "hover:shadow-[0_0_10px_rgba(255,255,255,0.2)]",
         none: "",
       }[hoverEffect];
-      
-      const IconComponent = hasSubMenu 
-        ? orientation === "horizontal" ? ChevronDown : ChevronRight 
+
+      const IconComponent = hasSubMenu
+        ? orientation === "horizontal"
+          ? ChevronDown
+          : ChevronRight
         : null;
-      
+
       const content = (
         <div
-          className={cn(
-            itemBaseClasses,
-            hoverClasses,
-            "relative"
-          )}
+          className={cn(itemBaseClasses, hoverClasses, "relative")}
           onMouseEnter={() => setHoveredIndex(index)}
           onMouseLeave={() => setHoveredIndex(null)}
-          onClick={
-            hasSubMenu 
-              ? () => toggleSubMenu(index) 
-              : item.onClick
-          }
+          onClick={hasSubMenu ? () => toggleSubMenu(index) : item.onClick}
         >
-          <div className={cn("flex items-center gap-2", iconPosition === "right" && "flex-row-reverse")}>
+          <div
+            className={cn(
+              "flex items-center gap-2",
+              iconPosition === "right" && "flex-row-reverse",
+            )}
+          >
             {showIcons && item.icon && (
               <motion.div
                 initial={{ opacity: 0.8 }}
-                animate={{ 
+                animate={{
                   opacity: isActive || isHovered ? 1 : 0.8,
                   scale: isActive || isHovered ? 1.1 : 1,
                 }}
@@ -156,9 +164,9 @@ export const EnhancedMenu = React.forwardRef<HTMLDivElement, EnhancedMenuProps>(
                 {item.icon}
               </motion.div>
             )}
-            
+
             <span>{item.label}</span>
-            
+
             {hasSubMenu && IconComponent && (
               <motion.div
                 initial={{ rotate: 0 }}
@@ -169,25 +177,30 @@ export const EnhancedMenu = React.forwardRef<HTMLDivElement, EnhancedMenuProps>(
                 <IconComponent size={14} />
               </motion.div>
             )}
-            
+
             {item.badge && (
               <motion.div
                 initial={{ scale: 0.8, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 className={cn(
                   "px-1.5 py-0.5 text-xs rounded-full",
-                  item.badgeVariant === "primary" && "bg-primary text-primary-foreground",
-                  item.badgeVariant === "secondary" && "bg-secondary text-secondary-foreground",
-                  item.badgeVariant === "destructive" && "bg-destructive text-destructive-foreground",
+                  item.badgeVariant === "primary" &&
+                    "bg-primary text-primary-foreground",
+                  item.badgeVariant === "secondary" &&
+                    "bg-secondary text-secondary-foreground",
+                  item.badgeVariant === "destructive" &&
+                    "bg-destructive text-destructive-foreground",
                   item.badgeVariant === "outline" && "border border-border",
-                  !item.badgeVariant || item.badgeVariant === "default" && "bg-muted text-muted-foreground"
+                  !item.badgeVariant ||
+                    (item.badgeVariant === "default" &&
+                      "bg-muted text-muted-foreground"),
                 )}
               >
                 {item.badge}
               </motion.div>
             )}
           </div>
-          
+
           {/* Underline hover effect */}
           {hoverEffect === "underline" && (
             <motion.div
@@ -199,19 +212,20 @@ export const EnhancedMenu = React.forwardRef<HTMLDivElement, EnhancedMenuProps>(
           )}
         </div>
       );
-      
-      const wrappedContent = item.href && !item.disabled && !hasSubMenu ? (
-        <Link href={item.href} className="no-underline">
-          {content}
-        </Link>
-      ) : (
-        content
-      );
-      
+
+      const wrappedContent =
+        item.href && !item.disabled && !hasSubMenu ? (
+          <Link href={item.href} className="no-underline">
+            {content}
+          </Link>
+        ) : (
+          content
+        );
+
       return (
         <div key={index} className="relative">
           {wrappedContent}
-          
+
           {/* Submenu */}
           {hasSubMenu && (
             <AnimatePresence>
@@ -225,11 +239,15 @@ export const EnhancedMenu = React.forwardRef<HTMLDivElement, EnhancedMenuProps>(
                     "z-10 mt-1 space-y-1",
                     orientation === "horizontal" && !isChild
                       ? "absolute left-0 min-w-[12rem] rounded-md border bg-popover p-1 shadow-md"
-                      : "ml-6"
+                      : "ml-6",
                   )}
                 >
-                  {item.children?.map((child, childIndex) => 
-                    renderMenuItem(child, `${index}-${childIndex}` as unknown as number, true)
+                  {item.children?.map((child, childIndex) =>
+                    renderMenuItem(
+                      child,
+                      `${index}-${childIndex}` as unknown as number,
+                      true,
+                    ),
                   )}
                 </motion.div>
               )}
@@ -238,12 +256,17 @@ export const EnhancedMenu = React.forwardRef<HTMLDivElement, EnhancedMenuProps>(
         </div>
       );
     };
-    
+
     return (
       <div ref={ref} className={cn("w-full", className)}>
         {/* Mobile menu toggle */}
         {collapseMobileMenu && (
-          <div className={cn("md:hidden mb-2", collapseMobileMenu === false && "hidden")}>
+          <div
+            className={cn(
+              "md:hidden mb-2",
+              collapseMobileMenu === false && "hidden",
+            )}
+          >
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="flex items-center justify-between w-full px-4 py-2 text-sm font-medium bg-accent/20 rounded-md"
@@ -258,7 +281,7 @@ export const EnhancedMenu = React.forwardRef<HTMLDivElement, EnhancedMenuProps>(
             </button>
           </div>
         )}
-        
+
         {/* Menu items */}
         <motion.div
           className={cn(
@@ -268,7 +291,7 @@ export const EnhancedMenu = React.forwardRef<HTMLDivElement, EnhancedMenuProps>(
             collapseMobileMenu && mobileMenuOpen === false && "hidden md:flex",
             collapseMobileMenu && mobileMenuOpen && "flex",
             !collapseMobileMenu && "flex",
-            mobileBreakpointClass
+            mobileBreakpointClass,
           )}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -288,7 +311,7 @@ export const EnhancedMenu = React.forwardRef<HTMLDivElement, EnhancedMenuProps>(
         </motion.div>
       </div>
     );
-  }
+  },
 );
 
 EnhancedMenu.displayName = "EnhancedMenu";

@@ -34,11 +34,11 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       if (savedCart) {
         const parsedCart = JSON.parse(savedCart);
         setItems(parsedCart);
-        
+
         // Calculate total items
         const count = parsedCart.reduce(
           (total: number, item: CartItem) => total + item.quantity,
-          0
+          0,
         );
         setItemsCount(count);
       }
@@ -51,12 +51,9 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     try {
       localStorage.setItem("cart", JSON.stringify(items));
-      
+
       // Update total count
-      const count = items.reduce(
-        (total, item) => total + item.quantity,
-        0
-      );
+      const count = items.reduce((total, item) => total + item.quantity, 0);
       setItemsCount(count);
     } catch (error) {
       console.error("Error saving cart to localStorage:", error);
@@ -68,10 +65,10 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     setItems((prevItems) => {
       // Check if item already exists in cart (same id, size and color)
       const existingItemIndex = prevItems.findIndex(
-        (item) => 
-          item.id === newItem.id && 
-          item.size === newItem.size && 
-          item.color === newItem.color
+        (item) =>
+          item.id === newItem.id &&
+          item.size === newItem.size &&
+          item.color === newItem.color,
       );
 
       // If item exists, update quantity
@@ -94,9 +91,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   // Update item quantity
   const updateQuantity = (id: string, quantity: number) => {
     setItems((prevItems) =>
-      prevItems.map((item) =>
-        item.id === id ? { ...item, quantity } : item
-      )
+      prevItems.map((item) => (item.id === id ? { ...item, quantity } : item)),
     );
   };
 
@@ -127,4 +122,4 @@ export function useCart() {
     throw new Error("useCart must be used within a CartProvider");
   }
   return context;
-} 
+}

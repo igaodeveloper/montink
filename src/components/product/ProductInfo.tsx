@@ -3,7 +3,16 @@
 import React, { useState, useEffect, createContext, useContext } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { ShoppingCart, Heart, Share2, Star, Award, CheckCircle2, AlertTriangle, RulerIcon } from "lucide-react";
+import {
+  ShoppingCart,
+  Heart,
+  Share2,
+  Star,
+  Award,
+  CheckCircle2,
+  AlertTriangle,
+  RulerIcon,
+} from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useCart } from "@/components/cart-context";
 
@@ -48,7 +57,7 @@ const ProductInfo = ({
   const [quantity, setQuantity] = useState(1);
   const [isFavorite, setIsFavorite] = useState(false);
   const [addedToCart, setAddedToCart] = useState(false);
-  
+
   const { addItem } = useCart();
 
   // Load selections from localStorage if available and less than 15 minutes old
@@ -124,7 +133,9 @@ const ProductInfo = ({
       quantity,
       size: selectedSize,
       color: selectedColor,
-      image: (document.querySelector('.product-gallery img') as HTMLImageElement)?.src,
+      image: (
+        document.querySelector(".product-gallery img") as HTMLImageElement
+      )?.src,
     });
 
     // Simulate adding to cart
@@ -155,7 +166,7 @@ const ProductInfo = ({
   // When color is selected, update both local state and context
   const handleColorSelect = (color: string) => {
     setSelectedColor(color);
-    
+
     // Vibrate if available (mobile devices) for tactile feedback
     if (navigator.vibrate) {
       navigator.vibrate(50);
@@ -174,24 +185,21 @@ const ProductInfo = ({
       Roxo: "#8A2BE2",
       Cinza: "#919191",
     };
-    
+
     return colorMap[colorName] || "#CCCCCC";
   };
 
   return (
     <ProductColorContext.Provider value={{ selectedColor, setSelectedColor }}>
       <motion.div
-        className={cn(
-          "flex flex-col gap-6",
-          className,
-        )}
+        className={cn("flex flex-col gap-6", className)}
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4, ease: "easeOut" }}
       >
         <div>
           <div className="flex items-center justify-between">
-            <motion.h1 
+            <motion.h1
               className="text-3xl font-bold tracking-tight md:text-4xl bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/70"
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
@@ -223,7 +231,7 @@ const ProductInfo = ({
           <div className="mt-2 flex items-center gap-2">
             <div className="flex items-center">
               {[...Array(5)].map((_, i) => (
-                <motion.div 
+                <motion.div
                   key={i}
                   initial={{ opacity: 0, scale: 0.5 }}
                   animate={{ opacity: 1, scale: 1 }}
@@ -249,7 +257,7 @@ const ProductInfo = ({
             </span>
           </div>
 
-          <motion.div 
+          <motion.div
             className="mt-2"
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -262,14 +270,16 @@ const ProductInfo = ({
               {formatPrice(price)}
             </p>
             <div className="flex items-center gap-2 mt-1">
-              <span className="text-sm text-muted-foreground">Em até 12x sem juros</span>
+              <span className="text-sm text-muted-foreground">
+                Em até 12x sem juros
+              </span>
               <span className="inline-flex items-center rounded-full bg-emerald-50 px-2 py-1 text-xs font-medium text-emerald-700 ring-1 ring-inset ring-emerald-700/10">
                 20% OFF
               </span>
             </div>
           </motion.div>
 
-          <motion.div 
+          <motion.div
             className="mt-4 flex items-center gap-2 text-sm text-muted-foreground"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -281,7 +291,7 @@ const ProductInfo = ({
         </div>
 
         {variants.size && variants.size.length > 0 && (
-          <motion.div 
+          <motion.div
             className="space-y-2"
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -290,14 +300,14 @@ const ProductInfo = ({
             <div className="flex items-center justify-between">
               <h3 className="font-medium">Tamanho</h3>
               {!selectedSize && (
-                <motion.span 
+                <motion.span
                   className="text-xs text-destructive flex items-center gap-1"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  transition={{ 
-                    repeat: 3, 
-                    repeatType: "reverse", 
-                    duration: 0.5 
+                  transition={{
+                    repeat: 3,
+                    repeatType: "reverse",
+                    duration: 0.5,
                   }}
                 >
                   <AlertTriangle className="h-3 w-3" />
@@ -337,9 +347,9 @@ const ProductInfo = ({
                 </motion.button>
               ))}
             </div>
-            
+
             <div className="mt-2 text-xs text-muted-foreground">
-              <button 
+              <button
                 onClick={() => window.open("#guia-tamanhos", "_blank")}
                 className="flex items-center gap-1 hover:text-primary"
               >
@@ -351,7 +361,7 @@ const ProductInfo = ({
         )}
 
         {variants.color && variants.color.length > 0 && (
-          <motion.div 
+          <motion.div
             className="space-y-2"
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -360,14 +370,14 @@ const ProductInfo = ({
             <div className="flex items-center justify-between">
               <h3 className="font-medium">Cor</h3>
               {!selectedColor && (
-                <motion.span 
+                <motion.span
                   className="text-xs text-destructive flex items-center gap-1"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  transition={{ 
-                    repeat: 3, 
-                    repeatType: "reverse", 
-                    duration: 0.5 
+                  transition={{
+                    repeat: 3,
+                    repeatType: "reverse",
+                    duration: 0.5,
                   }}
                 >
                   <AlertTriangle className="h-3 w-3" />
@@ -400,13 +410,11 @@ const ProductInfo = ({
                     whileTap={{ scale: 0.9 }}
                   >
                     <span
-                      className={cn(
-                        "h-6 w-6 rounded-full",
-                      )}
+                      className={cn("h-6 w-6 rounded-full")}
                       style={{ backgroundColor: colorValue }}
                     />
                     {selectedColor === color ? (
-                      <motion.span 
+                      <motion.span
                         className="absolute -bottom-6 text-xs font-medium"
                         initial={{ opacity: 0, y: -5 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -415,7 +423,7 @@ const ProductInfo = ({
                         {color}
                       </motion.span>
                     ) : (
-                      <motion.span 
+                      <motion.span
                         className="absolute -bottom-6 text-xs font-medium opacity-0 group-hover:opacity-100"
                         initial={{ opacity: 0, y: -5 }}
                         whileHover={{ opacity: 1, y: 0 }}
@@ -431,7 +439,7 @@ const ProductInfo = ({
           </motion.div>
         )}
 
-        <motion.div 
+        <motion.div
           className="space-y-2"
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -469,7 +477,7 @@ const ProductInfo = ({
           </div>
         </motion.div>
 
-        <motion.div 
+        <motion.div
           className="mt-4 flex gap-2"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -506,11 +514,15 @@ const ProductInfo = ({
                   <ShoppingCart className="h-5 w-5" />
                   <span className="relative z-10">Adicionar ao Carrinho</span>
                   {!(!selectedSize || !selectedColor) && (
-                    <motion.span 
+                    <motion.span
                       className="absolute bottom-0 left-0 h-1 bg-white/30"
                       initial={{ width: 0 }}
                       animate={{ width: "100%" }}
-                      transition={{ repeat: Infinity, duration: 2, ease: "linear" }}
+                      transition={{
+                        repeat: Infinity,
+                        duration: 2,
+                        ease: "linear",
+                      }}
                     ></motion.span>
                   )}
                 </motion.div>
@@ -526,7 +538,7 @@ const ProductInfo = ({
           </motion.div>
         </motion.div>
 
-        <motion.div 
+        <motion.div
           className="mt-2 flex flex-col gap-2 rounded-lg border bg-card/50 p-3 backdrop-blur-sm"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}

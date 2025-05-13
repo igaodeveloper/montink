@@ -7,7 +7,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { ThemeSwitcherWrapper } from "@/components/theme-switcher-wrapper";
 import { CartProvider } from "@/components/cart-context";
 
-const inter = Inter({ 
+const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
 });
@@ -19,8 +19,10 @@ const spaceGrotesk = Space_Grotesk({
 
 export const metadata: Metadata = {
   title: "Montink | Print On Demand e Produtos Personalizados",
-  description: "Crie e venda produtos personalizados com sua marca sem precisar investir em estoque, produção ou logística. Comece seu negócio online hoje!",
-  keywords: "print on demand, pod, estampas, produtos personalizados, sua marca, loja online, camisetas, canecas, e-commerce",
+  description:
+    "Crie e venda produtos personalizados com sua marca sem precisar investir em estoque, produção ou logística. Comece seu negócio online hoje!",
+  keywords:
+    "print on demand, pod, estampas, produtos personalizados, sua marca, loja online, camisetas, canecas, e-commerce",
 };
 
 export default function RootLayout({
@@ -29,7 +31,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="pt-BR" suppressHydrationWarning className={`${inter.variable} ${spaceGrotesk.variable}`}>
+    <html
+      lang="pt-BR"
+      suppressHydrationWarning
+      className={`${inter.variable} ${spaceGrotesk.variable}`}
+    >
       <Script src="https://api.tempolabs.ai/proxy-asset?url=https://storage.googleapis.com/tempo-public-assets/error-handling.js" />
       <body className="relative">
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem>

@@ -3,7 +3,16 @@
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Loader2, Truck, MapPin, Calendar, Package, Info, AlertTriangle, CheckCircle } from "lucide-react";
+import {
+  Loader2,
+  Truck,
+  MapPin,
+  Calendar,
+  Package,
+  Info,
+  AlertTriangle,
+  CheckCircle,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -41,16 +50,16 @@ const cityCoordinates: Record<string, { lat: number; lng: number }> = {
   "São Paulo": { lat: -23.5505, lng: -46.6333 },
   "Rio de Janeiro": { lat: -22.9068, lng: -43.1729 },
   "Belo Horizonte": { lat: -19.9167, lng: -43.9345 },
-  "Brasília": { lat: -15.7801, lng: -47.9292 },
-  "Salvador": { lat: -12.9714, lng: -38.5014 },
-  "Fortaleza": { lat: -3.7319, lng: -38.5267 },
-  "Recife": { lat: -8.0579, lng: -34.8829 },
-  "Porto Alegre": { lat: -30.0330, lng: -51.2300 },
-  "Curitiba": { lat: -25.4290, lng: -49.2671 },
-  "Manaus": { lat: -3.1190, lng: -60.0217 },
-  "Belém": { lat: -1.4558, lng: -48.4902 },
-  "Goiânia": { lat: -16.6799, lng: -49.2550 },
-  "Florianópolis": { lat: -27.5969, lng: -48.5495 },
+  Brasília: { lat: -15.7801, lng: -47.9292 },
+  Salvador: { lat: -12.9714, lng: -38.5014 },
+  Fortaleza: { lat: -3.7319, lng: -38.5267 },
+  Recife: { lat: -8.0579, lng: -34.8829 },
+  "Porto Alegre": { lat: -30.033, lng: -51.23 },
+  Curitiba: { lat: -25.429, lng: -49.2671 },
+  Manaus: { lat: -3.119, lng: -60.0217 },
+  Belém: { lat: -1.4558, lng: -48.4902 },
+  Goiânia: { lat: -16.6799, lng: -49.255 },
+  Florianópolis: { lat: -27.5969, lng: -48.5495 },
 };
 
 const ShippingCalculator = ({ className }: ShippingCalculatorProps) => {
@@ -64,7 +73,7 @@ const ShippingCalculator = ({ className }: ShippingCalculatorProps) => {
   const [showTooltip, setShowTooltip] = useState(false);
   const [isInputFocused, setIsInputFocused] = useState(false);
   const [recentlyCalculated, setRecentlyCalculated] = useState(false);
-  
+
   // Lista de CEPs recentes
   const [recentCeps, setRecentCeps] = useState<string[]>([]);
 
@@ -84,12 +93,14 @@ const ShippingCalculator = ({ className }: ShippingCalculatorProps) => {
             setShippingCost(parsedData.shippingCost);
           if (parsedData.selectedShipping)
             setSelectedShipping(parsedData.selectedShipping);
-          if (parsedData.recentCeps)
-            setRecentCeps(parsedData.recentCeps);
+          if (parsedData.recentCeps) setRecentCeps(parsedData.recentCeps);
 
           // If we have address data, always regenerate shipping options with icons
           if (parsedData.addressData) {
-            const cost = calculateShippingCost(parsedData.addressData.uf, parsedData.addressData.localidade);
+            const cost = calculateShippingCost(
+              parsedData.addressData.uf,
+              parsedData.addressData.localidade,
+            );
             generateShippingOptions(cost);
           }
           // We don't restore shipping options from localStorage as they contain React elements
@@ -116,15 +127,22 @@ const ShippingCalculator = ({ className }: ShippingCalculatorProps) => {
   };
 
   // Calculate distance using Haversine formula
-  const calculateDistance = (lat1: number, lng1: number, lat2: number, lng2: number): number => {
+  const calculateDistance = (
+    lat1: number,
+    lng1: number,
+    lat2: number,
+    lng2: number,
+  ): number => {
     const R = 6371; // Earth radius in kilometers
-    const dLat = (lat2 - lat1) * Math.PI / 180;
-    const dLng = (lng2 - lng1) * Math.PI / 180;
-    const a = 
-      Math.sin(dLat/2) * Math.sin(dLat/2) +
-      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * 
-      Math.sin(dLng/2) * Math.sin(dLng/2);
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+    const dLat = ((lat2 - lat1) * Math.PI) / 180;
+    const dLng = ((lng2 - lng1) * Math.PI) / 180;
+    const a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos((lat1 * Math.PI) / 180) *
+        Math.cos((lat2 * Math.PI) / 180) *
+        Math.sin(dLng / 2) *
+        Math.sin(dLng / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     return R * c; // Distance in kilometers
   };
 
@@ -133,7 +151,7 @@ const ShippingCalculator = ({ className }: ShippingCalculatorProps) => {
     // Check if we have the exact city coordinates
     let cityLat = 0;
     let cityLng = 0;
-    
+
     if (cityCoordinates[city]) {
       cityLat = cityCoordinates[city].lat;
       cityLng = cityCoordinates[city].lng;
@@ -156,10 +174,10 @@ const ShippingCalculator = ({ className }: ShippingCalculatorProps) => {
     let nearestDistance = Infinity;
     for (const center of distributionCenters) {
       const distance = calculateDistance(
-        cityLat, 
-        cityLng, 
-        center.lat, 
-        center.lng
+        cityLat,
+        cityLng,
+        center.lat,
+        center.lng,
       );
       if (distance < nearestDistance) {
         nearestDistance = distance;
@@ -169,7 +187,7 @@ const ShippingCalculator = ({ className }: ShippingCalculatorProps) => {
     // Calculate shipping cost based on distance
     const baseCost = 10; // Base cost in BRL
     let distanceCost = 0;
-    
+
     if (nearestDistance < 100) {
       distanceCost = 5;
     } else if (nearestDistance < 300) {
@@ -186,13 +204,23 @@ const ShippingCalculator = ({ className }: ShippingCalculatorProps) => {
 
     // Special cities might have different costs (e.g., capital cities)
     const capitalCities = [
-      "São Paulo", "Rio de Janeiro", "Belo Horizonte", "Brasília", 
-      "Salvador", "Fortaleza", "Recife", "Porto Alegre", "Curitiba", 
-      "Manaus", "Belém", "Goiânia", "Florianópolis"
+      "São Paulo",
+      "Rio de Janeiro",
+      "Belo Horizonte",
+      "Brasília",
+      "Salvador",
+      "Fortaleza",
+      "Recife",
+      "Porto Alegre",
+      "Curitiba",
+      "Manaus",
+      "Belém",
+      "Goiânia",
+      "Florianópolis",
     ];
-    
+
     const discount = capitalCities.includes(city) ? 5 : 0;
-    
+
     return Math.max(baseCost + distanceCost - discount, baseCost);
   };
 
@@ -200,16 +228,19 @@ const ShippingCalculator = ({ className }: ShippingCalculatorProps) => {
   const generateShippingOptions = (baseCost: number) => {
     // Add estimated delivery time based on distance
     let standardDays, expressDays, sameDayAvailable;
-    
-    if (baseCost <= 15) { // Very close
+
+    if (baseCost <= 15) {
+      // Very close
       standardDays = "2-3 dias úteis";
       expressDays = "1 dia útil";
       sameDayAvailable = true;
-    } else if (baseCost <= 25) { // Medium distance
+    } else if (baseCost <= 25) {
+      // Medium distance
       standardDays = "3-5 dias úteis";
       expressDays = "2 dias úteis";
       sameDayAvailable = false;
-    } else { // Far away
+    } else {
+      // Far away
       standardDays = "5-8 dias úteis";
       expressDays = "3-4 dias úteis";
       sameDayAvailable = false;
@@ -282,7 +313,7 @@ const ShippingCalculator = ({ className }: ShippingCalculatorProps) => {
     });
 
     setShippingOptions(options);
-    
+
     // Automatically select standard shipping
     setSelectedShipping("standard");
   };
@@ -298,12 +329,12 @@ const ShippingCalculator = ({ className }: ShippingCalculatorProps) => {
   // Handle shipping option selection
   const handleShippingSelection = (id: string) => {
     setSelectedShipping(id);
-    
+
     // Vibrate on selection for tactile feedback (mobile)
     if (navigator.vibrate) {
       navigator.vibrate(50);
     }
-    
+
     // Save selection to localStorage
     const savedData = localStorage.getItem("productSelections");
     const parsedData = savedData ? JSON.parse(savedData) : {};
@@ -314,7 +345,7 @@ const ShippingCalculator = ({ className }: ShippingCalculatorProps) => {
         ...parsedData,
         selectedShipping: id,
         timestamp: Date.now(),
-      })
+      }),
     );
   };
 
@@ -325,18 +356,18 @@ const ShippingCalculator = ({ className }: ShippingCalculatorProps) => {
       // Add to the beginning of the array and keep only the last 3
       const updatedCeps = [newCep, ...recentCeps].slice(0, 3);
       setRecentCeps(updatedCeps);
-      
+
       // Save to localStorage
       const savedData = localStorage.getItem("productSelections");
       const parsedData = savedData ? JSON.parse(savedData) : {};
-      
+
       localStorage.setItem(
         "productSelections",
         JSON.stringify({
           ...parsedData,
           recentCeps: updatedCeps,
           timestamp: Date.now(),
-        })
+        }),
       );
     }
   };
@@ -353,7 +384,9 @@ const ShippingCalculator = ({ className }: ShippingCalculatorProps) => {
 
     try {
       const formattedCep = cep.replace(/\D/g, "");
-      const response = await fetch(`https://viacep.com.br/ws/${formattedCep}/json/`);
+      const response = await fetch(
+        `https://viacep.com.br/ws/${formattedCep}/json/`,
+      );
       const data = await response.json();
 
       if (data.erro) {
@@ -367,10 +400,10 @@ const ShippingCalculator = ({ className }: ShippingCalculatorProps) => {
         const cost = calculateShippingCost(data.uf, data.localidade);
         setShippingCost(cost);
         generateShippingOptions(cost);
-        
+
         // Add to recent CEPs
         addToRecentCeps(cep);
-        
+
         // Animação indicando cálculo recente
         setRecentlyCalculated(true);
         setTimeout(() => setRecentlyCalculated(false), 3000);
@@ -388,7 +421,7 @@ const ShippingCalculator = ({ className }: ShippingCalculatorProps) => {
             shippingCost: cost,
             recentCeps: [cep, ...(parsedData.recentCeps || [])].slice(0, 3),
             timestamp: Date.now(),
-          })
+          }),
         );
       }
     } catch (error) {
@@ -405,7 +438,7 @@ const ShippingCalculator = ({ className }: ShippingCalculatorProps) => {
       fetchAddressData();
     }
   };
-  
+
   // Select a recent CEP
   const handleSelectRecentCep = (selectedCep: string) => {
     setCep(selectedCep);
@@ -416,10 +449,10 @@ const ShippingCalculator = ({ className }: ShippingCalculatorProps) => {
   };
 
   return (
-    <motion.div 
+    <motion.div
       className={cn(
         "rounded-xl border bg-card/80 p-5 shadow-sm backdrop-blur-sm",
-        className
+        className,
       )}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
@@ -448,10 +481,7 @@ const ShippingCalculator = ({ className }: ShippingCalculatorProps) => {
               onKeyDown={handleKeyPress}
               onFocus={() => setIsInputFocused(true)}
               onBlur={() => setTimeout(() => setIsInputFocused(false), 200)}
-              className={cn(
-                "pl-9 pr-20",
-                error ? "border-destructive" : ""
-              )}
+              className={cn("pl-9 pr-20", error ? "border-destructive" : "")}
               maxLength={9}
             />
             <div className="absolute right-2 top-1/2 -translate-y-1/2">
@@ -466,21 +496,28 @@ const ShippingCalculator = ({ className }: ShippingCalculatorProps) => {
                 {isLoading ? (
                   <motion.div
                     animate={{ rotate: 360 }}
-                    transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
+                    transition={{
+                      repeat: Infinity,
+                      duration: 1,
+                      ease: "linear",
+                    }}
                   >
                     <Loader2 className="h-4 w-4" />
                   </motion.div>
                 ) : (
-                  <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+                  <motion.div
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.9 }}
+                  >
                     <MapPin className="h-4 w-4" />
                   </motion.div>
                 )}
               </Button>
             </div>
-            
+
             <AnimatePresence>
               {isInputFocused && recentCeps.length > 0 && (
-                <motion.div 
+                <motion.div
                   className="absolute left-0 right-0 top-full mt-1 rounded-md border bg-card shadow-md z-10"
                   initial={{ opacity: 0, y: -5 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -509,7 +546,12 @@ const ShippingCalculator = ({ className }: ShippingCalculatorProps) => {
             <button
               type="button"
               className="text-xs text-primary hover:underline"
-              onClick={() => window.open("https://buscacepinter.correios.com.br/app/endereco/index.php", "_blank")}
+              onClick={() =>
+                window.open(
+                  "https://buscacepinter.correios.com.br/app/endereco/index.php",
+                  "_blank",
+                )
+              }
             >
               Não sei meu CEP
             </button>
@@ -523,7 +565,7 @@ const ShippingCalculator = ({ className }: ShippingCalculatorProps) => {
                 <Info className="h-3 w-3" />
                 <span className="ml-1">Informações de entrega</span>
               </div>
-              
+
               <AnimatePresence>
                 {showTooltip && (
                   <motion.div
@@ -533,7 +575,9 @@ const ShippingCalculator = ({ className }: ShippingCalculatorProps) => {
                     exit={{ opacity: 0, y: 10 }}
                   >
                     <p className="text-xs text-muted-foreground">
-                      Entregamos para todo o Brasil. O prazo pode variar de acordo com a sua localização. Produtos personalizados podem adicionar 1-2 dias úteis ao prazo estimado.
+                      Entregamos para todo o Brasil. O prazo pode variar de
+                      acordo com a sua localização. Produtos personalizados
+                      podem adicionar 1-2 dias úteis ao prazo estimado.
                     </p>
                   </motion.div>
                 )}
@@ -562,14 +606,22 @@ const ShippingCalculator = ({ className }: ShippingCalculatorProps) => {
               transition={{ duration: 0.3 }}
               className="overflow-hidden"
             >
-              <motion.div 
+              <motion.div
                 className={cn(
                   "rounded-lg border bg-muted/50 p-3",
-                  recentlyCalculated ? "border-primary/50" : ""
+                  recentlyCalculated ? "border-primary/50" : "",
                 )}
-                animate={recentlyCalculated ? { 
-                  boxShadow: ["0 0 0 rgba(0, 0, 0, 0)", "0 0 8px rgba(0, 120, 255, 0.5)", "0 0 0 rgba(0, 0, 0, 0)"] 
-                } : {}}
+                animate={
+                  recentlyCalculated
+                    ? {
+                        boxShadow: [
+                          "0 0 0 rgba(0, 0, 0, 0)",
+                          "0 0 8px rgba(0, 120, 255, 0.5)",
+                          "0 0 0 rgba(0, 0, 0, 0)",
+                        ],
+                      }
+                    : {}
+                }
                 transition={{ duration: 1.5 }}
               >
                 <div className="mb-2 flex items-center gap-1.5">
@@ -601,7 +653,7 @@ const ShippingCalculator = ({ className }: ShippingCalculatorProps) => {
                         "flex cursor-pointer items-start gap-3 rounded-lg border p-3 transition-colors",
                         selectedShipping === option.id
                           ? "border-primary bg-primary/5"
-                          : "hover:border-primary/50"
+                          : "hover:border-primary/50",
                       )}
                       onClick={() => handleShippingSelection(option.id)}
                     >
@@ -609,9 +661,13 @@ const ShippingCalculator = ({ className }: ShippingCalculatorProps) => {
                       <div className="flex-1">
                         <div className="flex items-center justify-between">
                           <span className="font-medium">{option.name}</span>
-                          <span className={cn(
-                            option.price === 0 ? "text-green-600 font-medium" : ""
-                          )}>
+                          <span
+                            className={cn(
+                              option.price === 0
+                                ? "text-green-600 font-medium"
+                                : "",
+                            )}
+                          >
                             {option.price === 0
                               ? "Grátis"
                               : formatPrice(option.price)}
