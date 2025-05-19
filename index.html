@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-commerce - Página de Produto</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>E-commerce</h1>
+            <div class="cart-icon">
+                <span class="cart-count">0</span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-shopping-cart"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+            </div>
+        </header>
+        
+        <main class="product-container">
+            <div class="product-image">
+                <img id="main-image" src="" alt="Imagem do Produto">
+            </div>
+            
+            <div class="product-details">
+                <h2 id="product-title">Carregando...</h2>
+                <p class="product-price" id="product-price">R$ 0,00</p>
+                
+                <div class="product-variants">
+                    <!-- Variants will be dynamically added here -->
+                </div>
+                
+                <div class="product-stock">
+                    <span id="stock-status">Verificando estoque...</span>
+                </div>
+                
+                <div class="quantity-selector">
+                    <button id="decrease-quantity">-</button>
+                    <span id="quantity">1</span>
+                    <button id="increase-quantity">+</button>
+                </div>
+                
+                <button id="add-to-cart" class="btn-primary">Adicionar ao Carrinho</button>
+            </div>
+        </main>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
